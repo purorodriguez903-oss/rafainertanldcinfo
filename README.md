@@ -6,8 +6,8 @@ Este bot está programado para mantenerse conectado de manera ininterrumpida (**
 
 ## 📌 Configuración
 
-- **Nombre:** `𝐃𝐄𝐍𝐙𝐄𝐋-𝐗𝐈𝐓💸`
-- **Servidor:** `𝑫𝒆𝒏𝒛𝒆𝒍 𝑿𝕿 💵`
+- **Nombre:** `RAFA INTERNAL💸`
+- **Servidor:** `RAFA INTERNAL 💵`
 - **Canal de Voz Fijado:** Configurable mediante `VOICE_CHANNEL_ID` en variables de entorno.
 - **Enlace de Invitación:** Genera el enlace desde el Discord Developer Portal (OAuth2 > URL Generator > Bot + applications.commands).
 
@@ -19,7 +19,7 @@ Este bot está programado para mantenerse conectado de manera ininterrumpida (**
 Cada vez que CUALQUIER usuario entra al canal de voz `➕ Crear VC`, el bot extrae su nombre limpio (eliminando clanes o fuentes ilegibles) y lo saluda en voz alta con frases como:
 - *"Hola [Nombre], bienvenido papi, qué bueno que llegaste a la sala."*
 - *"Miren quién llegó... Bienvenido papi [Nombre], ponte cómodo."*
-- *"Hola papi [Nombre], bienvenido a Denzel XT. Disfruta la llamada."*
+- *"Hola papi [Nombre], bienvenido a RAFA INTERNAL. Disfruta la llamada."*
 - *"Qué onda [Nombre], bienvenido a la sala más dura. Qué gusto tenerte aquí."*
 
 *(Nota: Las despedidas al salir fueron eliminadas por completo según lo solicitado).*
@@ -34,7 +34,7 @@ Cuando alguien escribe en el chat integrado del canal de voz `➕ Crear VC`:
 > 💡 **Tip Importante:**
 > Para que el bot pueda leer todos los mensajes sin necesidad de que lo etiqueten, activa la casilla **MESSAGE CONTENT INTENT** en el portal de desarrolladores:
 > 👉 [Activar Message Content Intent en Discord Developer Portal](https://discord.com/developers/applications) (Sección *Bot* -> *Privileged Gateway Intents* -> Guardar cambios).
-> Si aún no lo has activado, también lee cualquier mensaje donde lo mencionen (ejemplo: `@DENZEL-XIT hola a todos`).
+> Si aún no lo has activado, también lee cualquier mensaje donde lo mencionen (ejemplo: `@RAFA INTERNAL hola a todos`).
 
 ---
 

@@ -34,10 +34,14 @@ from gtts import gTTS
 load_dotenv()
 
 TOKEN = os.getenv("DISCORD_TOKEN")
+BOT_ID = int(os.getenv("BOT_ID", "1571743806238236753"))
+APPLICATION_ID = int(os.getenv("APPLICATION_ID", "1571743806238236753"))
 VOICE_CHANNEL_ID = int(os.getenv("VOICE_CHANNEL_ID", "1543395577289777202"))
 TICKET_CHANNEL_ID = int(os.getenv("TICKET_CHANNEL_ID", "1527614381314015252"))
 ANNOUNCEMENT_CHANNEL_ID = int(os.getenv("ANNOUNCEMENT_CHANNEL_ID", "1527614353476554762"))
 SECURITY_LOGS_CHANNEL_ID = int(os.getenv("SECURITY_LOGS_CHANNEL_ID", "1568911585743863909"))
+PANEL_LOGS_CHANNEL_ID = int(os.getenv("PANEL_LOGS_CHANNEL_ID", "1571747009206034534"))
+PANEL_API_SECRET = os.getenv("PANEL_API_SECRET", "denzel_panel_v7_key")
 WELCOME_CHANNEL_ID = int(os.getenv("WELCOME_CHANNEL_ID", "1527614361785471006"))
 LEAVE_CHANNEL_ID = int(os.getenv("LEAVE_CHANNEL_ID", "1543366821564911616"))
 RULES_CHANNEL_ID = int(os.getenv("RULES_CHANNEL_ID", "1527654849150193694"))
@@ -46,7 +50,7 @@ PERMANENT_INVITE_URL = os.getenv("PERMANENT_INVITE_URL", "https://discord.gg/2NT
 GUILD_ID = int(os.getenv("GUILD_ID", "1387608034641055785"))
 PORT = int(os.getenv("PORT", "8080"))
 
-# Nuevos Canales y Roles del Sistema Denzel XT
+# Nuevos Canales y Roles del Sistema RAFA INTERNAL
 REFERENCES_CHANNEL_ID = int(os.getenv("REFERENCES_CHANNEL_ID", "1527614373588373504"))
 LIVES_CHANNEL_ID = int(os.getenv("LIVES_CHANNEL_ID", "1552827664136540211"))
 FREE_KEYS_CHANNEL_ID = int(os.getenv("FREE_KEYS_CHANNEL_ID", "1529687325146353674"))
@@ -378,7 +382,7 @@ async def create_ticket_for_user(interaction: discord.Interaction, selected_prod
         embed_ticket.add_field(name="👤 Cliente", value=f"{interaction.user.mention} (`{interaction.user.id}`)", inline=True)
         embed_ticket.add_field(name="📦 Pedido", value=f"**{selected_product}**", inline=True)
         embed_ticket.set_footer(
-            text="Denzel XT • Solo miembros del Staff / Owner pueden cerrar este ticket.",
+            text="RAFA INTERNAL • Solo miembros del Staff / Owner pueden cerrar este ticket.",
             icon_url=guild.icon.url if guild.icon else None
         )
 
@@ -743,7 +747,7 @@ class GiveawayManager:
 def create_payment_methods_embed(guild: Optional[discord.Guild] = None) -> tuple[discord.Embed, discord.ui.View]:
     """Genera el Embed oficial con métodos de pago listos para copiar."""
     embed = discord.Embed(
-        title="💳 MÉTODOS DE PAGO OFICIALES • DENZEL XT 💵",
+        title="💳 MÉTODOS DE PAGO OFICIALES • RAFA INTERNAL 💵",
         description=(
             "¡Adquiere tus **Paneles de iOS**, **Proxies**, **Complex PC** y **BR Mods** con total seguridad!\n"
             "Elige tu método de pago preferido y sigue las indicaciones:\n\n"
@@ -802,7 +806,7 @@ def create_payment_methods_embed(guild: Optional[discord.Guild] = None) -> tuple
     )
 
     embed.set_footer(
-        text="Denzel XT • Ventas oficiales • Atención Inmediata 24/7",
+        text="RAFA INTERNAL • Ventas oficiales • Atención Inmediata 24/7",
         icon_url=guild.icon.url if (guild and guild.icon) else None
     )
 
@@ -911,7 +915,7 @@ async def handle_review_submission(
     )
     embed.set_thumbnail(url=interaction.user.display_avatar.url)
     embed.set_footer(
-        text="Denzel XT • Referencias Oficiales • Compra 100% Segura y Verificada",
+        text="RAFA INTERNAL • Referencias Oficiales • Compra 100% Segura y Verificada",
         icon_url=guild.icon.url if guild.icon else None
     )
 
@@ -1221,7 +1225,7 @@ class FreeKeysPanelView(discord.ui.View):
         embed = discord.Embed(
             title="🏆 TOP 10 INVITADORES DEL SERVIDOR 🏆",
             description=(
-                "¡Los miembros con más personas invitadas a **Denzel XT**!\n\n"
+                "¡Los miembros con más personas invitadas a **RAFA INTERNAL**!\n\n"
                 + "\n".join(lines) + "\n\n"
                 f"👉 ¡Invita a tus amigos y gana keys gratuitas semanales!"
             ),
@@ -1263,7 +1267,7 @@ class BotAuthModal(discord.ui.Modal, title="🔐 Autorizar Bot (Owner)"):
                 color=discord.Color.green(),
                 timestamp=discord.utils.utcnow()
             )
-            embed.set_footer(text="Denzel XT • Sistema de Seguridad 24/7", icon_url=interaction.guild.icon.url if interaction.guild and interaction.guild.icon else None)
+            embed.set_footer(text="RAFA INTERNAL • Sistema de Seguridad 24/7", icon_url=interaction.guild.icon.url if interaction.guild and interaction.guild.icon else None)
 
             try:
                 if self.message:
@@ -1355,7 +1359,7 @@ class BotVerificationView(discord.ui.View):
             color=discord.Color.red(),
             timestamp=discord.utils.utcnow()
         )
-        embed.set_footer(text="Denzel XT • Sistema Anti-Raid 24/7", icon_url=guild.icon.url if guild and guild.icon else None)
+        embed.set_footer(text="RAFA INTERNAL • Sistema Anti-Raid 24/7", icon_url=guild.icon.url if guild and guild.icon else None)
 
         try:
             await interaction.message.edit(content=f"🔨 **Bot {self.bot_name} rechazado y expulsado.**", embed=embed, view=None)
@@ -1375,13 +1379,17 @@ class BotVerificationView(discord.ui.View):
 
 class DenzerVoiceBot(discord.Client):
     def __init__(self, **kwargs):
+        if "application_id" not in kwargs and APPLICATION_ID:
+            kwargs["application_id"] = APPLICATION_ID
         super().__init__(**kwargs)
 
+        self.bot_id = BOT_ID
         self.tree = app_commands.CommandTree(self)
         self.target_channel_id = VOICE_CHANNEL_ID
         self.ticket_channel_id = TICKET_CHANNEL_ID
         self.announcement_channel_id = ANNOUNCEMENT_CHANNEL_ID
         self.security_logs_channel_id = SECURITY_LOGS_CHANNEL_ID
+        self.panel_logs_channel_id = PANEL_LOGS_CHANNEL_ID
         self.welcome_channel_id = WELCOME_CHANNEL_ID
         self.leave_channel_id = LEAVE_CHANNEL_ID
         self.rules_channel_id = RULES_CHANNEL_ID
@@ -1506,7 +1514,7 @@ class DenzerVoiceBot(discord.Client):
                 embed = discord.Embed(
                     title="🏆 TOP 10 INVITADORES DEL SERVIDOR 🏆",
                     description=(
-                        "¡Los miembros con más personas invitadas a **Denzel XT**!\n\n"
+                        "¡Los miembros con más personas invitadas a **RAFA INTERNAL**!\n\n"
                         + "\n".join(lines) + "\n\n"
                         f"👉 ¡Invita a tus amigos y gana keys gratuitas semanales!"
                     ),
@@ -1575,7 +1583,7 @@ class DenzerVoiceBot(discord.Client):
                     color=discord.Color.red(),
                     timestamp=discord.utils.utcnow()
                 )
-                embed.set_footer(text="Denzel XT • Sistema de Seguridad 24/7", icon_url=guild.icon.url if guild and guild.icon else None)
+                embed.set_footer(text="RAFA INTERNAL • Sistema de Seguridad 24/7", icon_url=guild.icon.url if guild and guild.icon else None)
 
                 try:
                     await interaction.message.edit(content=f"🔨 **Bot {bot_name} rechazado y expulsado.**", embed=embed, view=None)
@@ -1589,9 +1597,9 @@ class DenzerVoiceBot(discord.Client):
     def create_ticket_panel_embed(self, guild: Optional[discord.Guild] = None) -> discord.Embed:
         """Crea el mensaje Embed estético para el panel de tickets con la lista de precios oficial."""
         embed = discord.Embed(
-            title="🛒 Tienda Denzel XT | Sistema de Tickets",
+            title="🛒 Tienda RAFA INTERNAL | Sistema de Tickets",
             description=(
-                "¡Bienvenido a la tienda oficial de **Denzel XT**! 💸\n\n"
+                "¡Bienvenido a la tienda oficial de **RAFA INTERNAL**! 💸\n\n"
                 "Selecciona el producto que deseas adquirir en los menús desplegables de abajo.\n"
                 "Se creará tu canal privado al instante donde los vendedores te atenderán.\n"
             ),
@@ -1618,7 +1626,7 @@ class DenzerVoiceBot(discord.Client):
             inline=False
         )
         embed.set_footer(
-            text="Denzel XT • Precios oficiales en USD • Soporte y Ventas 24/7",
+            text="RAFA INTERNAL • Precios oficiales en USD • Soporte y Ventas 24/7",
             icon_url=guild.icon.url if (guild and guild.icon) else None
         )
         return embed
@@ -1626,10 +1634,10 @@ class DenzerVoiceBot(discord.Client):
     def create_announcement_content(self, guild: Optional[discord.Guild] = None) -> tuple[discord.Embed, discord.ui.View]:
         """Crea el Embed y Botón de Anuncio para incentivar compras y dirigir a tickets."""
         embed = discord.Embed(
-            title="🔥 ¡MEJORA TU NIVEL CON DENZEL XT! | PANELES, PROXIES Y MODS 💸",
+            title="🔥 ¡MEJORA TU NIVEL CON RAFA INTERNAL! | PANELES, PROXIES Y MODS 💸",
             description=(
                 "¿Quieres dominar tus partidas con la mayor seguridad y el mejor rendimiento? 🚀\n"
-                "En **Denzel XT** te ofrecemos herramientas VIP 100% optimizadas y con soporte garantizado.\n\n"
+                "En **RAFA INTERNAL** te ofrecemos herramientas VIP 100% optimizadas y con soporte garantizado.\n\n"
                 "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
                 "🍎 **PRODUCTOS DISPONIBLES PARA iOS:**\n"
                 "• 📱 **Panel de iOS:** *Mes: $20 USD • Permanente: $50 USD*\n"
@@ -1648,7 +1656,7 @@ class DenzerVoiceBot(discord.Client):
             color=discord.Color.from_rgb(0, 255, 136)
         )
         embed.set_footer(
-            text="Denzel XT • Ventas oficiales • Atención Inmediata 24/7",
+            text="RAFA INTERNAL • Ventas oficiales • Atención Inmediata 24/7",
             icon_url=guild.icon.url if (guild and guild.icon) else None
         )
 
@@ -1717,7 +1725,7 @@ class DenzerVoiceBot(discord.Client):
             async for msg in channel.history(limit=25):
                 if msg.author.id == self.user.id and msg.embeds:
                     for emb in msg.embeds:
-                        if emb.title and "MEJORA TU NIVEL CON DENZEL XT" in emb.title:
+                        if emb.title and "MEJORA TU NIVEL CON RAFA INTERNAL" in emb.title:
                             announcement_found = True
                             try:
                                 embed, view = self.create_announcement_content(channel.guild)
@@ -1739,9 +1747,9 @@ class DenzerVoiceBot(discord.Client):
     def create_free_keys_panel_content(self, guild: Optional[discord.Guild] = None) -> tuple[discord.Embed, discord.ui.View]:
         """Crea el Embed y Botones para el canal de Keys Gratis y Recompensas por Invites."""
         embed = discord.Embed(
-            title="🎁 KEYS GRATIS & RECOMPENSAS POR INVITACIONES • DENZEL XT 💸",
+            title="🎁 KEYS GRATIS & RECOMPENSAS POR INVITACIONES • RAFA INTERNAL 💸",
             description=(
-                "¡En **Denzel XT** premiamos a nuestra comunidad con **Keys 100% Gratis de BR Mods**, paneles y descuentos exclusivos! 🔥\n\n"
+                "¡En **RAFA INTERNAL** premiamos a nuestra comunidad con **Keys 100% Gratis de BR Mods**, paneles y descuentos exclusivos! 🔥\n\n"
                 "Hay dos formas automáticas y 100% seguras de conseguir keys sin pagar nada:\n\n"
                 "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
                 "🎉 **1. SORTEOS AUTOMÁTICOS DE KEYS:**\n"
@@ -1762,7 +1770,7 @@ class DenzerVoiceBot(discord.Client):
             color=discord.Color.from_rgb(0, 255, 170)
         )
         embed.set_footer(
-            text="Denzel XT • Keys y Sorteos Oficiales • 100% Transparentes",
+            text="RAFA INTERNAL • Keys y Sorteos Oficiales • 100% Transparentes",
             icon_url=guild.icon.url if (guild and guild.icon) else None
         )
 
@@ -1864,13 +1872,13 @@ class DenzerVoiceBot(discord.Client):
             await interaction.response.send_message(f"✅ Anuncio de compra publicado con éxito en {target.mention}.", ephemeral=True)
 
         # 1. COMANDO /pagos
-        @self.tree.command(name="pagos", description="Muestra los métodos de pago oficiales de Denzel XT con datos para copiar")
+        @self.tree.command(name="pagos", description="Muestra los métodos de pago oficiales de RAFA INTERNAL con datos para copiar")
         async def pagos_cmd(interaction: discord.Interaction):
             embed, view = create_payment_methods_embed(interaction.guild)
             await interaction.response.send_message(embed=embed, view=view)
 
         # 2. COMANDO /referencia
-        @self.tree.command(name="referencia", description="Deja tu reseña y calificación del servicio y productos de Denzel XT")
+        @self.tree.command(name="referencia", description="Deja tu reseña y calificación del servicio y productos de RAFA INTERNAL")
         @app_commands.describe(
             estrellas="Calificación de 1 a 5 estrellas",
             producto="Producto adquirido (ej: Panel iOS, Complex PC, BR Mods, Proxy)",
@@ -1943,7 +1951,7 @@ class DenzerVoiceBot(discord.Client):
             embed = discord.Embed(
                 title="🎉 ¡ENTREGA COMPLETADA CON ÉXITO! 💸",
                 description=(
-                    f"👋 ¡Muchas gracias por tu compra en **Denzel XT**!\n\n"
+                    f"👋 ¡Muchas gracias por tu compra en **RAFA INTERNAL**!\n\n"
                     f"👤 **Cliente:** {cliente.mention} (`{cliente.name}`)\n"
                     f"📦 **Producto Entregado:** **{producto}**\n"
                     f"👑 **Vendedor:** {interaction.user.mention}\n"
@@ -1957,7 +1965,7 @@ class DenzerVoiceBot(discord.Client):
             )
             embed.set_thumbnail(url=cliente.display_avatar.url)
             embed.set_footer(
-                text="Denzel XT • Garantía y Soporte 24/7",
+                text="RAFA INTERNAL • Garantía y Soporte 24/7",
                 icon_url=guild.icon.url if (guild and guild.icon) else None
             )
 
@@ -2010,7 +2018,7 @@ class DenzerVoiceBot(discord.Client):
             leaves = stats.get("leaves", 0)
 
             embed = discord.Embed(
-                title=f"🎟️ Contador de Invitaciones | Denzel XT",
+                title=f"🎟️ Contador de Invitaciones | RAFA INTERNAL",
                 description=(
                     f"Estadísticas de invitaciones oficiales de {target.mention}:\n\n"
                     f"📈 **Total Invitados:** **{total} miembros**\n"
@@ -2026,7 +2034,7 @@ class DenzerVoiceBot(discord.Client):
             )
             embed.set_thumbnail(url=target.display_avatar.url)
             embed.set_footer(
-                text="Denzel XT • Invita amigos y gana recompensas semanales",
+                text="RAFA INTERNAL • Invita amigos y gana recompensas semanales",
                 icon_url=interaction.guild.icon.url if interaction.guild and interaction.guild.icon else None
             )
             await interaction.response.send_message(embed=embed)
@@ -2053,7 +2061,7 @@ class DenzerVoiceBot(discord.Client):
             embed = discord.Embed(
                 title="🏆 TOP 10 INVITADORES DEL SERVIDOR 🏆",
                 description=(
-                    "¡Los miembros que más están haciendo crecer a la comunidad de **Denzel XT**!\n\n"
+                    "¡Los miembros que más están haciendo crecer a la comunidad de **RAFA INTERNAL**!\n\n"
                     + "\n".join(lines) + "\n\n"
                     f"👉 ¡Usa `/invites` para ver tus invitaciones y ganar keys gratis!"
                 ),
@@ -2061,7 +2069,7 @@ class DenzerVoiceBot(discord.Client):
                 timestamp=discord.utils.utcnow()
             )
             embed.set_footer(
-                text="Denzel XT • Ranking Oficial de Crecimiento",
+                text="RAFA INTERNAL • Ranking Oficial de Crecimiento",
                 icon_url=guild.icon.url if guild and guild.icon else None
             )
             await interaction.response.send_message(embed=embed)
@@ -2118,7 +2126,7 @@ class DenzerVoiceBot(discord.Client):
                 timestamp=discord.utils.utcnow()
             )
             embed.set_footer(
-                text="Denzel XT • Sorteos Oficiales • 100% Transparente",
+                text="RAFA INTERNAL • Sorteos Oficiales • 100% Transparente",
                 icon_url=interaction.guild.icon.url if interaction.guild and interaction.guild.icon else None
             )
 
@@ -2227,7 +2235,7 @@ class DenzerVoiceBot(discord.Client):
             )
             embed.set_thumbnail(url=interaction.user.display_avatar.url)
             embed.set_footer(
-                text=f"Denzel XT • Alertas Oficiales de Directo • {plataforma.value}",
+                text=f"RAFA INTERNAL • Alertas Oficiales de Directo • {plataforma.value}",
                 icon_url=guild.icon.url if guild and guild.icon else None
             )
 
@@ -2274,8 +2282,126 @@ class DenzerVoiceBot(discord.Client):
             except Exception as e:
                 logger.warning(f"Aviso registrando live en logs: {e}")
 
+    async def send_panel_log_embed(self, payload: dict) -> tuple[bool, str]:
+        """Envía notificaciones estructuradas del Panel al canal configurado (1571747009206034534)."""
+        event = str(payload.get("event", "")).strip().lower()
+        user = str(payload.get("user") or "Desconocido").strip()
+        pc_name = str(payload.get("pc_name") or "N/A").strip()
+        ip_addr = str(payload.get("ip") or "N/A").strip()
+        country = str(payload.get("country") or "N/A").strip()
+        hwid = str(payload.get("hwid") or "N/A").strip()
+        edition = str(payload.get("edition") or "N/A").strip()
+        region = str(payload.get("region") or "N/A").strip()
+        account_id = str(payload.get("account_id") or "N/A").strip()
+        level = str(payload.get("level") or "0").strip()
+        nickname = str(payload.get("nickname") or "N/A").strip()
+        ban_reason = str(payload.get("ban_reason") or "").strip()
+        ban_type = str(payload.get("ban_type") or "").strip()
+        ban_duration = str(payload.get("ban_duration") or "").strip()
+        features = str(payload.get("active_features") or payload.get("features") or "").strip()
+        if not features:
+            features = "AimBot • ESP Box • Skeleton • Line • Watermark"
+
+        channel = self.get_channel(self.panel_logs_channel_id)
+        if channel is None:
+            try:
+                channel = await self.fetch_channel(self.panel_logs_channel_id)
+            except Exception as e:
+                return False, f"No se pudo obtener el canal {self.panel_logs_channel_id}: {e}"
+
+        now_dt = discord.utils.utcnow()
+        now_ts = int(now_dt.timestamp())
+
+        if event == "panel_open":
+            embed = discord.Embed(
+                title="🟢 PANEL INICIADO — RAFA INTERNAL",
+                description=f"El usuario **{user}** abrió el panel en su equipo.",
+                color=0x00E5FF,
+                timestamp=now_dt,
+            )
+            embed.add_field(name="👤 Usuario", value=f"`{user}`", inline=True)
+            embed.add_field(name="🖥️ PC / Host", value=f"`{pc_name}`", inline=True)
+            embed.add_field(name="🛡️ Edición", value=f"`{edition}`", inline=True)
+            embed.add_field(name="🌐 IP Pública", value=f"`{ip_addr}`", inline=True)
+            embed.add_field(name="🌍 País", value=f"`{country}`", inline=True)
+            embed.add_field(name="🕒 Hora de Apertura", value=f"<t:{now_ts}:F> (<t:{now_ts}:R>)", inline=False)
+            embed.add_field(name="⚡ Funciones del Panel", value=f"```{features}```", inline=False)
+            embed.add_field(name="🔑 HWID", value=f"```{hwid[:900]}```", inline=False)
+            embed.set_footer(text="RAFA INTERNAL • Monitor Automático de Panel")
+
+        elif event == "account_connected":
+            embed = discord.Embed(
+                title="🎮 NUEVA CUENTA DE FREE FIRE DETECTADA — RAFA INTERNAL",
+                description=f"Se detectó e inició sesión con éxito en una cuenta de **Free Fire**.",
+                color=0x22C55E,
+                timestamp=now_dt,
+            )
+            embed.add_field(name="🏷️ Nombre Cuenta", value=f"**`{nickname}`**", inline=True)
+            embed.add_field(name="🆔 ID de Cuenta", value=f"`{account_id}`", inline=True)
+            embed.add_field(name="⭐ Nivel de Cuenta", value=f"`{level}`", inline=True)
+            embed.add_field(name="🌎 Región", value=f"`{region}`", inline=True)
+            embed.add_field(name="🛡️ Edición Panel", value=f"`{edition}`", inline=True)
+            embed.add_field(name="👤 Usuario PC", value=f"`{user}` (`{pc_name}`)", inline=True)
+            embed.add_field(name="🌍 País / IP", value=f"`{country}` | `{ip_addr}`", inline=True)
+            embed.add_field(name="🕒 Fecha de Conexión", value=f"<t:{now_ts}:F> (<t:{now_ts}:R>)", inline=False)
+            embed.add_field(name="⚡ Funciones Activas", value=f"```{features}```", inline=False)
+            embed.set_footer(text="RAFA INTERNAL • Monitor de Cuentas 24/7")
+
+        elif event == "account_banned":
+            target_label = nickname if nickname != "N/A" else (account_id if account_id != "N/A" else user)
+            motivo_txt = ban_type or ban_reason or "Blacklist / Suspensión detectada en memoria"
+            if ban_reason and ban_type and ban_reason not in ban_type:
+                motivo_txt = f"{ban_type} (Código {ban_reason})"
+
+            dur_secs = int(ban_duration) if (ban_duration.isdigit() and int(ban_duration) > 0) else 0
+            if dur_secs > 0:
+                if dur_secs >= 86400:
+                    dias = dur_secs // 86400
+                    horas = (dur_secs % 86400) // 3600
+                    dur_txt = f"{dias} días, {horas} horas ({dur_secs}s)"
+                elif dur_secs >= 3600:
+                    horas = dur_secs // 3600
+                    mins = (dur_secs % 3600) // 60
+                    dur_txt = f"{horas} horas, {mins} min ({dur_secs}s)"
+                else:
+                    dur_txt = f"{dur_secs} segundos"
+                unban_dt = now_dt + datetime.timedelta(seconds=dur_secs)
+                unban_str = f"<t:{int(unban_dt.timestamp())}:F> (<t:{int(unban_dt.timestamp())}:R>)"
+            else:
+                dur_txt = "⛔ Permanente / Indefinida"
+                unban_str = "❌ Nunca (Baneo Definitivo)"
+
+            ban_date_str = f"<t:{now_ts}:F> (<t:{now_ts}:R>)"
+
+            embed = discord.Embed(
+                title="🚨 ALERTA CRÍTICA: CUENTA SUSPENDIDA / BANEADA 🚨",
+                description=f"⚠️ **La cuenta `{target_label}` ha sido suspendida / baneada por Free Fire.**",
+                color=0xEF4444,
+                timestamp=now_dt,
+            )
+            embed.add_field(name="🏷️ Nombre Cuenta", value=f"**`{nickname}`**", inline=True)
+            embed.add_field(name="🆔 ID Cuenta", value=f"`{account_id}`", inline=True)
+            embed.add_field(name="🌎 Región", value=f"`{region}`", inline=True)
+            embed.add_field(name="⭐ Nivel", value=f"`{level}`", inline=True)
+            embed.add_field(name="⚠️ Motivo de Sanción", value=f"**`{motivo_txt}`**", inline=True)
+            embed.add_field(name="⏳ Duración", value=f"`{dur_txt}`", inline=True)
+            embed.add_field(name="📅 Fecha del Baneo", value=ban_date_str, inline=False)
+            embed.add_field(name="🔓 Fecha de Desbaneo", value=unban_str, inline=False)
+            embed.add_field(name="⚡ Funciones que estaban activas", value=f"```{features}```", inline=False)
+            embed.add_field(name="👤 Usuario PC", value=f"`{user}` (`{pc_name}`)", inline=True)
+            embed.add_field(name="🌍 País / IP", value=f"`{country}` | `{ip_addr}`", inline=True)
+            embed.add_field(name="🔑 HWID", value=f"`{hwid[:120]}`", inline=False)
+            embed.set_footer(text="RAFA INTERNAL • Alerta de Seguridad Anti-Ban 24/7")
+        else:
+            return False, f"Evento desconocido: {event}"
+
+        await channel.send(embed=embed)
+        return True, "ok"
+        await channel.send(embed=embed)
+        return True, "ok"
+
     async def start_cloud_health_server(self):
-        """Servidor HTTP liviano para Railway/Render."""
+        """Servidor HTTP liviano para Railway/Render + puente del Panel."""
         if getattr(self, "_health_server_started", False):
             return
         self._health_server_started = True
@@ -2285,14 +2411,30 @@ class DenzerVoiceBot(discord.Client):
                 uptime_str = format_uptime(time.time() - self.start_time)
                 return web.Response(text=f"OK - Denzer Bot Online (Uptime: {uptime_str})")
 
+            async def handle_panel_event(request):
+                if PANEL_API_SECRET:
+                    hdr = request.headers.get("X-Panel-Secret", "")
+                    if hdr != PANEL_API_SECRET:
+                        return web.json_response({"ok": False, "error": "unauthorized"}, status=401)
+                try:
+                    payload = await request.json()
+                except Exception:
+                    return web.json_response({"ok": False, "error": "invalid_json"}, status=400)
+                if not isinstance(payload, dict):
+                    return web.json_response({"ok": False, "error": "invalid_payload"}, status=400)
+                ok, msg = await self.send_panel_log_embed(payload)
+                status = 200 if ok else 500
+                return web.json_response({"ok": ok, "detail": msg}, status=status)
+
             app.router.add_get("/", handle_ping)
             app.router.add_get("/health", handle_ping)
+            app.router.add_post("/api/panel_event", handle_panel_event)
 
             runner = web.AppRunner(app)
             await runner.setup()
             site = web.TCPSite(runner, "0.0.0.0", PORT)
             await site.start()
-            logger.info(f"🌐 Servidor de salud activo en puerto {PORT}.")
+            logger.info(f"🌐 Servidor HTTP y Panel Bridge activo en puerto {PORT} (/api/panel_event -> {self.panel_logs_channel_id}).")
         except Exception as e:
             logger.debug(f"Aviso servidor de salud HTTP: {e}")
 
@@ -2303,6 +2445,7 @@ class DenzerVoiceBot(discord.Client):
         logger.info(f"🎫 Canal de Tickets Objetivo: {self.ticket_channel_id}")
         logger.info(f"📢 Canal de Anuncios: {self.announcement_channel_id}")
         logger.info(f"🛡️ Canal de Logs de Seguridad 24/7: {self.security_logs_channel_id}")
+        logger.info(f"🖥️ Canal de Logs del Panel: {self.panel_logs_channel_id}")
         logger.info(f"👋 Canal de Bienvenida: {self.welcome_channel_id}")
         logger.info(f"👋 Canal de Despedida: {self.leave_channel_id}")
         logger.info(f"💎 Canal de Referencias: {self.references_channel_id}")
@@ -2459,7 +2602,7 @@ class DenzerVoiceBot(discord.Client):
             saludos = [
                 f"Hola {clean_name}, bienvenido papi, qué bueno que llegaste a la sala.",
                 f"Miren quién llegó... Bienvenido papi {clean_name}, ponte cómodo.",
-                f"Hola papi {clean_name}, bienvenido a Denzel XT. Disfruta la llamada.",
+                f"Hola papi {clean_name}, bienvenido a RAFA INTERNAL. Disfruta la llamada.",
                 f"Qué onda {clean_name}, bienvenido papi, qué gusto tenerte aquí en la sala más dura."
             ]
             frase_saludo = random.choice(saludos)
@@ -2542,7 +2685,7 @@ class DenzerVoiceBot(discord.Client):
                 category=None,
                 position=target_pos,
                 overwrites=overwrites,
-                topic="denzel_xt_security_logs_24_7 | Canal oficial de Registros de Seguridad 24/7 de Denzel XT"
+                topic="denzel_xt_security_logs_24_7 | Canal oficial de Registros de Seguridad 24/7 de RAFA INTERNAL"
             )
             if ann_channel:
                 await new_ch.edit(position=ann_channel.position)
@@ -2569,7 +2712,7 @@ class DenzerVoiceBot(discord.Client):
             )
             if thumbnail:
                 embed.set_thumbnail(url=thumbnail)
-            embed.set_footer(text="Denzel XT • Logs de Seguridad 24/7", icon_url=guild.icon.url if guild and guild.icon else None)
+            embed.set_footer(text="RAFA INTERNAL • Logs de Seguridad 24/7", icon_url=guild.icon.url if guild and guild.icon else None)
             await channel.send(embed=embed)
         except Exception as e:
             logger.error(f"❌ Error al enviar evento al canal de logs: {e}")
@@ -2917,7 +3060,7 @@ class DenzerVoiceBot(discord.Client):
                     color=discord.Color.from_rgb(255, 69, 0),
                     timestamp=discord.utils.utcnow()
                 )
-                embed.set_footer(text="Denzel XT • Sistema Anti-Bots Maliciosos 24/7", icon_url=guild.icon.url if guild and guild.icon else None)
+                embed.set_footer(text="RAFA INTERNAL • Sistema Anti-Bots Maliciosos 24/7", icon_url=guild.icon.url if guild and guild.icon else None)
 
                 view = BotVerificationView(bot_id=member.id, bot_name=member.name)
                 owner_mention = guild.owner.mention if guild.owner else "@everyone"
@@ -3229,7 +3372,7 @@ class DenzerVoiceBot(discord.Client):
             uptime_str = format_uptime(time.time() - self.start_time)
             status_list = [
                 f"24/7 Online ⏱️ {uptime_str}",
-                "Denzel XT 💸 | 100% Inmortal",
+                "RAFA INTERNAL 💸 | 100% Inmortal",
                 "Tickets de Venta Activos 🎫",
                 "Usa /tts para hablar 💬"
             ]

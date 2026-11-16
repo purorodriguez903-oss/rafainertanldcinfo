@@ -64,13 +64,13 @@ if user_payload:
         print(f"⚠️ Error al actualizar usuario: {e.code} - {e.read().decode()}")
 
 # 4. Actualizar descripción / bio en /applications/@me
-description = """💸 𝐃𝐄𝐍𝐙𝐄𝐋-𝐗𝐈𝐓 💸 | 𝟐𝟒/𝟕 𝐕𝐎𝐈𝐂𝐄 𝐊𝐄𝐄𝐏𝐄𝐑 🔊
+description = """💸 RAFA INTERNAL 💸 | 𝟐𝟒/𝟕 𝐕𝐎𝐈𝐂𝐄 𝐊𝐄𝐄𝐏𝐄𝐑 🔊
 ───────────────────────────────
 ⚡ Bot oficial de voz permanente 24/7.
 🛡️ Blindaje Inmortal: Anti-Kick • Anti-Move • Anti-AFK
 👑 Activo ininterrumpidamente las 24 horas del día.
 ───────────────────────────────
-💎 Denzel XT | Always Online & Secured."""
+💎 RAFA INTERNAL | Always Online & Secured."""
 
 app_payload = {
     "description": description

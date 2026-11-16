@@ -1,6 +1,6 @@
 @echo off
 chcp 65001 >nul
-title Denzer Bot 24/7 - Canal de Voz Permanente
+title Rafa Internal Bot 24/7 - Canal de Voz Permanente
 color 0A
 
 cd /d "%~dp0"
@@ -8,7 +8,7 @@ cd /d "%~dp0"
 :loop
 cls
 echo ===================================================================
-echo               DENZER BOT 24/7 - MODO INMORTAL
+echo               RAFA INTERNAL BOT 24/7 - MODO INMORTAL
 echo               Canal de Voz: 1543395577289777202
 echo ===================================================================
 echo.
