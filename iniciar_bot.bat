@@ -15,7 +15,10 @@ echo.
 echo Presiona Ctrl+C en esta ventana si deseas cerrar el bot manualmente.
 echo.
 
-python bot.py
+set "PYTHON_EXE=python"
+if exist "%LOCALAPPDATA%\Programs\Python\Python312\python.exe" set "PYTHON_EXE=%LOCALAPPDATA%\Programs\Python\Python312\python.exe"
+
+"%PYTHON_EXE%" bot.py
 
 echo.
 echo ===================================================================

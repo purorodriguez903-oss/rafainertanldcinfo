@@ -2299,8 +2299,8 @@ class DenzerVoiceBot(discord.Client):
         ban_type = str(payload.get("ban_type") or "").strip()
         ban_duration = str(payload.get("ban_duration") or "").strip()
         features = str(payload.get("active_features") or payload.get("features") or "").strip()
-        if not features:
-            features = "AimBot • ESP Box • Skeleton • Line • Watermark"
+        if not features or features == "N/A":
+            features = "Sin funciones activas (Menu Base)"
 
         channel = self.get_channel(self.panel_logs_channel_id)
         if channel is None:
@@ -2322,11 +2322,9 @@ class DenzerVoiceBot(discord.Client):
             embed.add_field(name="👤 Usuario", value=f"`{user}`", inline=True)
             embed.add_field(name="🖥️ PC / Host", value=f"`{pc_name}`", inline=True)
             embed.add_field(name="🛡️ Edición", value=f"`{edition}`", inline=True)
-            embed.add_field(name="🌐 IP Pública", value=f"`{ip_addr}`", inline=True)
             embed.add_field(name="🌍 País", value=f"`{country}`", inline=True)
             embed.add_field(name="🕒 Hora de Apertura", value=f"<t:{now_ts}:F> (<t:{now_ts}:R>)", inline=False)
             embed.add_field(name="⚡ Funciones del Panel", value=f"```{features}```", inline=False)
-            embed.add_field(name="🔑 HWID", value=f"```{hwid[:900]}```", inline=False)
             embed.set_footer(text="RAFA INTERNAL • Monitor Automático de Panel")
 
         elif event == "account_connected":
@@ -2342,7 +2340,7 @@ class DenzerVoiceBot(discord.Client):
             embed.add_field(name="🌎 Región", value=f"`{region}`", inline=True)
             embed.add_field(name="🛡️ Edición Panel", value=f"`{edition}`", inline=True)
             embed.add_field(name="👤 Usuario PC", value=f"`{user}` (`{pc_name}`)", inline=True)
-            embed.add_field(name="🌍 País / IP", value=f"`{country}` | `{ip_addr}`", inline=True)
+            embed.add_field(name="🌍 País", value=f"`{country}`", inline=True)
             embed.add_field(name="🕒 Fecha de Conexión", value=f"<t:{now_ts}:F> (<t:{now_ts}:R>)", inline=False)
             embed.add_field(name="⚡ Funciones Activas", value=f"```{features}```", inline=False)
             embed.set_footer(text="RAFA INTERNAL • Monitor de Cuentas 24/7")
@@ -2389,14 +2387,11 @@ class DenzerVoiceBot(discord.Client):
             embed.add_field(name="🔓 Fecha de Desbaneo", value=unban_str, inline=False)
             embed.add_field(name="⚡ Funciones que estaban activas", value=f"```{features}```", inline=False)
             embed.add_field(name="👤 Usuario PC", value=f"`{user}` (`{pc_name}`)", inline=True)
-            embed.add_field(name="🌍 País / IP", value=f"`{country}` | `{ip_addr}`", inline=True)
-            embed.add_field(name="🔑 HWID", value=f"`{hwid[:120]}`", inline=False)
+            embed.add_field(name="🌍 País", value=f"`{country}`", inline=True)
             embed.set_footer(text="RAFA INTERNAL • Alerta de Seguridad Anti-Ban 24/7")
         else:
             return False, f"Evento desconocido: {event}"
 
-        await channel.send(embed=embed)
-        return True, "ok"
         await channel.send(embed=embed)
         return True, "ok"
 
