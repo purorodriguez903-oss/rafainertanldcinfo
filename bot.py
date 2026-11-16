@@ -2312,10 +2312,14 @@ class DenzerVoiceBot(discord.Client):
         now_dt = discord.utils.utcnow()
         now_ts = int(now_dt.timestamp())
 
-        if event == "panel_open":
+        if event == "account_connected":
+            # Omitido para evitar spam repetitivo al volver al lobby
+            return True, "account_connected omitido para evitar spam"
+
+        elif event == "panel_open":
             embed = discord.Embed(
                 title="🟢 PANEL INICIADO — RAFA INTERNAL",
-                description=f"El usuario **{user}** abrió el panel en su equipo.",
+                description=f"El panel se conectó con éxito en el equipo de **{user}**.",
                 color=0x00E5FF,
                 timestamp=now_dt,
             )
@@ -2325,25 +2329,27 @@ class DenzerVoiceBot(discord.Client):
             embed.add_field(name="🌍 País", value=f"`{country}`", inline=True)
             embed.add_field(name="🕒 Hora de Apertura", value=f"<t:{now_ts}:F> (<t:{now_ts}:R>)", inline=False)
             embed.add_field(name="⚡ Funciones del Panel", value=f"```{features}```", inline=False)
-            embed.set_footer(text="RAFA INTERNAL • Monitor Automático de Panel")
+            embed.set_footer(text="RAFA INTERNAL • Conexión Real de Panel")
 
-        elif event == "account_connected":
+        elif event == "match_started":
+            total_players = payload.get("total_players", 0)
+            players_list = str(payload.get("players_list") or "Sin jugadores detectados").strip()
+
             embed = discord.Embed(
-                title="🎮 NUEVA CUENTA DE FREE FIRE DETECTADA — RAFA INTERNAL",
-                description=f"Se detectó e inició sesión con éxito en una cuenta de **Free Fire**.",
-                color=0x22C55E,
+                title="⚔️ PARTIDA INICIADA — RAFA INTERNAL",
+                description="🎮 **¡Partida en curso detectada en Free Fire!**",
+                color=0x3B82F6,
                 timestamp=now_dt,
             )
-            embed.add_field(name="🏷️ Nombre Cuenta", value=f"**`{nickname}`**", inline=True)
+            embed.add_field(name="🏷️ Cuenta en Juego", value=f"**`{nickname}`**", inline=True)
             embed.add_field(name="🆔 ID de Cuenta", value=f"`{account_id}`", inline=True)
-            embed.add_field(name="⭐ Nivel de Cuenta", value=f"`{level}`", inline=True)
+            embed.add_field(name="⭐ Nivel", value=f"`{level}`", inline=True)
             embed.add_field(name="🌎 Región", value=f"`{region}`", inline=True)
             embed.add_field(name="🛡️ Edición Panel", value=f"`{edition}`", inline=True)
             embed.add_field(name="👤 Usuario PC", value=f"`{user}` (`{pc_name}`)", inline=True)
-            embed.add_field(name="🌍 País", value=f"`{country}`", inline=True)
-            embed.add_field(name="🕒 Fecha de Conexión", value=f"<t:{now_ts}:F> (<t:{now_ts}:R>)", inline=False)
             embed.add_field(name="⚡ Funciones Activas", value=f"```{features}```", inline=False)
-            embed.set_footer(text="RAFA INTERNAL • Monitor de Cuentas 24/7")
+            embed.add_field(name=f"👥 Jugadores en Partida ({total_players})", value=f"```{players_list[:950]}```", inline=False)
+            embed.set_footer(text="RAFA INTERNAL • Telemetría de Partidas 24/7")
 
         elif event == "account_banned":
             target_label = nickname if nickname != "N/A" else (account_id if account_id != "N/A" else user)
